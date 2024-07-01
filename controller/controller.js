@@ -4,7 +4,7 @@ const users = [
 ]
 
 
-const signin = async (req, res)=>{
+ const signup = async (req, res)=>{
     
     
     const {username, password} = req.body;
@@ -21,4 +21,29 @@ const signin = async (req, res)=>{
 
 };
 
-module.exports = signin;
+ const login = async (req, res)=>{
+    const {username, password} = req.body;
+    const user = users.find((u)=>u.username === username)
+    
+    if(!user) {
+        res.send("wrong username")
+        return;
+    }
+    const isValid = await bcrypt.compare(password, user.password)
+    if(!isValid){
+        res.send("wrong password");
+        return;
+    }
+   
+
+    res.send("successfully login");
+}
+
+module.exports = {
+    signup,
+    login,
+
+};
+
+
+   
